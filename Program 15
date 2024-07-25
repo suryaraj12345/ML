@@ -1,0 +1,42 @@
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+# Sample data: 'Month', 'MarketingSpend', 'Sales'
+data = {
+    'Month': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    'MarketingSpend': [200, 220, 240, 210, 230, 250, 260, 270, 280, 300, 310, 320],
+    'Sales': [20, 22, 23, 21, 24, 25, 26, 27, 28, 30, 32, 35]
+}
+
+# Convert the dictionary into a pandas DataFrame
+df = pd.DataFrame(data)
+
+# Define features (X) and target (y)
+X = df[['Month', 'MarketingSpend']]
+y = df['Sales']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a Linear Regression model
+model = LinearRegression()
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Make predictions
+y_pred = model.predict(X_test)
+
+# Calculate Mean Squared Error
+mse = mean_squared_error(y_test, y_pred)
+
+print(f"Predicted Sales: {y_pred}")
+print(f"Mean Squared Error: {mse:.2f}")
+
+# Predict future sales
+future_months = np.array([[13, 330], [14, 340]])  # Example: months 13 and 14 with marketing spends
+future_sales = model.predict(future_months)
+print(f"Future Sales Predictions: {future_sales}")
