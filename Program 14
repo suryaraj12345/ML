@@ -1,0 +1,53 @@
+import numpy as np
+import pandas as pd
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+# Load the Iris dataset
+data = load_iris()
+X = data.data
+y = data.target
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Initialize the models
+knn = KNeighborsClassifier(n_neighbors=3)
+decision_tree = DecisionTreeClassifier(random_state=42)
+logistic_regression = LogisticRegression(max_iter=200, random_state=42)
+
+# Train the models
+knn.fit(X_train, y_train)
+decision_tree.fit(X_train, y_train)
+logistic_regression.fit(X_train, y_train)
+
+# Make predictions
+knn_pred = knn.predict(X_test)
+decision_tree_pred = decision_tree.predict(X_test)
+logistic_regression_pred = logistic_regression.predict(X_test)
+
+# Calculate accuracy and confusion matrix for each model
+knn_accuracy = accuracy_score(y_test, knn_pred)
+knn_conf_matrix = confusion_matrix(y_test, knn_pred)
+
+decision_tree_accuracy = accuracy_score(y_test, decision_tree_pred)
+decision_tree_conf_matrix = confusion_matrix(y_test, decision_tree_pred)
+
+logistic_regression_accuracy = accuracy_score(y_test, logistic_regression_pred)
+logistic_regression_conf_matrix = confusion_matrix(y_test, logistic_regression_pred)
+
+print(f"KNN Accuracy: {knn_accuracy:.2f}")
+print("KNN Confusion Matrix:")
+print(knn_conf_matrix)
+
+print(f"Decision Tree Accuracy: {decision_tree_accuracy:.2f}")
+print("Decision Tree Confusion Matrix:")
+print(decision_tree_conf_matrix)
+
+print(f"Logistic Regression Accuracy: {logistic_regression_accuracy:.2f}")
+print("Logistic Regression Confusion Matrix:")
+print(logistic_regression_conf_matrix)
